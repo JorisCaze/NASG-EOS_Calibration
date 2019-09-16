@@ -1,0 +1,10 @@
+# Config. files
+*.vscode
+*.DS_Store
+
+# Compil/exe files
+*.o
+exe
+
+# Output files
+res/*.txt

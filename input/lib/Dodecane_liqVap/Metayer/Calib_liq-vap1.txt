@@ -1,0 +1,52 @@
+--- Reference conditions for liquid-vapor calibration ---
+
+-- Compute Cp_k and q_k --
+
+-> State 0
+Temperature      (T0)  [K]
+298.
+Enthalpy Liquid  (hL0) [J/kg]
+0.
+Enthalpy Gas     (hG0) [J/kg]
+360.02e3
+
+-> State 1
+Temperature      (T1)  [K]
+473.
+Enthalpy Liquid  (hL1) [J/kg]
+443.53e3
+Enthalpy Gas     (hG1) [J/kg]
+710.94e3
+
+-- Compute pInf_k and gamma_k --
+-> State 0
+  -- Liquid --
+Temperature                     (T0bisL)   [K]
+298.
+Specific volume Liquid          (vL0)      [m3/kg]
+1.33e-3
+Saturation vapor pressure       (pSat0L)   [Pa]
+15.
+  -- Gas --
+Temperature                     (T0bisG)   [K]
+298.
+Specific volume Gas 	          (vG0)      [m3/kg]
+948.16
+Saturation vapor pressure       (pSat0G)   [Pa]
+15.
+
+-> State 1
+  -- Liquid -- 
+Temperature                     (T1bisL)   [K]
+473.
+Specific volume Liquid 		      (vL1)      [m3/kg]
+1.63e-3
+Saturation vapor pressure       (pSat1L)   [Pa]
+67349.
+  -- Gas -- 
+Temperature                     (T1bisG)   [K]
+473.
+Specific volume Gas 	          (vG1)      [m3/kg]
+0.3239
+Saturation vapor pressure       (pSat1G)   [Pa]
+67349.
