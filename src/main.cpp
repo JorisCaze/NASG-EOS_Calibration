@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-    cout << "*** Noble-Abel Stiffened Gas EOS Liquid/vapor calibration ***\n\n";
+    cout << "\n*** Noble-Abel Stiffened Gas EOS Liquid/vapor calibration ***\n\n";
 
     string run("res/");
     double p0, ro0, c0;
@@ -18,7 +18,7 @@ int main()
     vector<double> Texp, psatExp, vGexp, vLexp, hLexp, hGexp, LvExp; 
 
     readLiqVapInput(p0,ro0,c0);
-    readExpData("input/expData.txt",Texp,psatExp,vGexp,vLexp,hLexp,hGexp,LvExp);
+    readExpData("input/expData.txt",Texp,psatExp,vGexp,vLexp,hGexp,hLexp,LvExp);
 
     mvL = meanValue(vLexp);
     mT = meanValue(Texp);
@@ -52,7 +52,6 @@ int main()
     cout << "cvL    (J.kg-1.K-1)  : " << cvL << endl;
     cout << "gammaL (-)           : " << gammaL << endl;
     cout << "q'L    (J.kg-1)      : " << qPrimL << endl;
-
     cout << "\n";
 
     cout << "-- Gas (G) ---\n";
@@ -62,27 +61,28 @@ int main()
     cout << "cvG    (J.kg-1.K-1)  : " << cvG << endl;
     cout << "gammaG (-)           : " << gammaG << endl;
     cout << "q'G    (J.kg-1)      : " << qPrimG << endl;
+    cout << "\n";
     
     // --- Write theoric curves --- 
-    vector<double> Tth, hLth, hGth, LvTh, PsatTh, vlTh, vgTh;
+    vector<double> hLth, hGth, LvTh, PsatTh, vlTh, vgTh;
     double A(0.),B(0.),C(0.),D(0.), E(0.);
     
     coeffPsatTh(cpG,cpL,cvG,cvL,qG,qL,qPrimG,qPrimL,bG,bL,A,B,C,D,E);
 
     for (unsigned int i = 0; i < Texp.size(); i++) {
-        // PsatTh.push_back(computePsatTh(A,B,C,D,pinfG,pinfL,Texp[i]));
+        PsatTh.push_back(computePsatTh(A,B,C,D,E,pinfL,Texp[i]));
         hLth.push_back(computeThEnthalpy(cpL,bL,qL,Texp[i],PsatTh[i]));
         hGth.push_back(computeThEnthalpy(cpG,bG,qG,Texp[i],PsatTh[i]));
         LvTh.push_back(hGth[i]-hLth[i]);
         vlTh.push_back(computeVkTh(cpL,cvL,pinfL,bL,Texp[i],PsatTh[i]));
         vgTh.push_back(computeVkTh(cpG,cvG,pinfG,bG,Texp[i],PsatTh[i]));
     }
-    writePlotFile("res/Psat_th.txt",Tth,PsatTh);
-    writePlotFile("res/hL_th.txt",Tth,hLth);
-    writePlotFile("res/hG_th.txt",Tth,hGth);
-    writePlotFile("res/Lv_th.txt",Tth,LvTh);
-    writePlotFile("res/vL_th.txt",Tth,vlTh);
-    writePlotFile("res/vG_th.txt",Tth,vgTh);
+    writePlotFile("res/Psat_th.txt",Texp,PsatTh);
+    writePlotFile("res/hL_th.txt",Texp,hLth);
+    writePlotFile("res/hG_th.txt",Texp,hGth);
+    writePlotFile("res/Lv_th.txt",Texp,LvTh);
+    writePlotFile("res/vL_th.txt",Texp,vlTh);
+    writePlotFile("res/vG_th.txt",Texp,vgTh);
 
     return 0;
 }

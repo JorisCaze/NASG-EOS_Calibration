@@ -31,6 +31,7 @@ double computeGammak(double cpk, double cvk);
 
 // --- Theoric curves --- 
 void coeffPsatTh(double cpG, double cpL, double cvG, double cvL, double qG, double qL, double qPrimG, double qPrimL, double bG, double bL, double &A, double &B, double &C, double &D, double &E);
+double computePsatTh(double A, double B, double C, double D, double E, double pinfL, double T);
 double computeThEnthalpy(double cpk, double bk, double qk, double T, double P);
 double computeVkTh(double cpk, double cvk, double pinfk, double bk, double T, double P);
 

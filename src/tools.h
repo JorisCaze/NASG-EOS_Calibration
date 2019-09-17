@@ -7,7 +7,7 @@
 #include <fstream>
 
 // --- Read/Write files --- 
-void readExpData(std::string file, std::vector<double> &Texp, std::vector<double> &PsatExp, std::vector<double> &vGexp, std::vector<double> &vLexp, std::vector<double> &hLexp, std::vector<double> &hGexp, std::vector<double> &LvExp);
+void readExpData(std::string file, std::vector<double> &Texp, std::vector<double> &PsatExp, std::vector<double> &vGexp, std::vector<double> &vLexp, std::vector<double> &hGexp, std::vector<double> &hLexp, std::vector<double> &LvExp);
 void writePlotFile(std::string file, std::vector<double> &x, std::vector<double> &y);
 
 // Least Square Method tools

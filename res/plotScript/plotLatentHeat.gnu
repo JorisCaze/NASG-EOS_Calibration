@@ -7,5 +7,5 @@ set key bottom left
 set xlabel "Temperature T (k)"
 set title "Latent Heat Lv (kJ/kg)"
 
-plot "Lv_th.txt" u 1:($2*0.001) title "Theoric", "../input/Liq-vap/Lv_exp.txt" u 1:($2*0.001) title "Experimental"
+plot "Lv_th.txt" u 1:($2*0.001) title "Theoric", "../input/expData.txt" u 1:($7*0.001) title "Experimental"
 pause(-1)

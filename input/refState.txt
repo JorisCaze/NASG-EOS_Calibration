@@ -2,8 +2,8 @@
 
 -> At rest
 Pressure      (p0)    [Pa]
-1.e5
+1.0453e5
 Density       (ro0)   [kg/m3]
-1.e3
+957.74
 Sound speed   (c0)    [m/s]
-1647.
+1542.

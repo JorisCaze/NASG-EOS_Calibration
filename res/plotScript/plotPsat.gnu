@@ -8,5 +8,5 @@ set key bottom left
 set xlabel "Temperature T (k)"
 set title "Saturated pressure Psat (bar)"
 
-plot "Psat_th.txt" u 1:($2*0.00001) title "Theoric", "../input/Liq-vap/Psat_exp.txt" u 1:($2*0.00001) title "Experimental"
+plot "Psat_th.txt" u 1:($2*0.00001) title "Theoric", "../input/expData.txt" u 1:($2*0.00001) title "Experimental"
 pause(-1)

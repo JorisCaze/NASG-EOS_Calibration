@@ -4,7 +4,7 @@ using namespace std;
 
 // **************************************************
 
-void readExpData(string file, vector<double> &Texp, vector<double> &PsatExp, vector<double> &vGexp, vector<double> &vLexp, vector<double> &hLexp, vector<double> &hGexp, vector<double> &LvExp)
+void readExpData(string file, vector<double> &Texp, vector<double> &PsatExp, vector<double> &vGexp, vector<double> &vLexp, vector<double> &hGexp, vector<double> &hLexp, vector<double> &LvExp)
 {
     // Purpose : read the experimental data with 7 columns and an ignored header
     ifstream strmIn(file.c_str());
@@ -17,8 +17,8 @@ void readExpData(string file, vector<double> &Texp, vector<double> &PsatExp, vec
             PsatExp.push_back(dat2);
             vGexp.push_back(dat3);
             vLexp.push_back(dat4);
-            hLexp.push_back(dat5);
             hGexp.push_back(dat6);
+            hLexp.push_back(dat5);
             LvExp.push_back(dat7);
         }
     }

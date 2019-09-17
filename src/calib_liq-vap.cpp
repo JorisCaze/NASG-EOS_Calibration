@@ -5,7 +5,7 @@ using namespace std;
 
 void readLiqVapInput(double &p0, double &ro0, double &c0)
 {
-    ifstream strmRefStates("input/Calib_liq-vap.txt");
+    ifstream strmRefStates("input/refState.txt");
     string line("");
     if (strmRefStates) {
         for (int i=1; i<6; i++) {getline(strmRefStates,line);}
@@ -16,7 +16,7 @@ void readLiqVapInput(double &p0, double &ro0, double &c0)
         c0 = stod(line);
     }
     else {
-        cout << "Error : reading Calib_liq-vap.txt file\n"; exit(0);
+        cout << "Error : reading refState.txt file\n"; exit(0);
     }
 }
 
@@ -239,31 +239,30 @@ void coeffPsatTh(double cpG, double cpL, double cvG, double cvL, double qG, doub
     E = (bL-bG)/(cpG-cvG);
 }
 
-// double computePsatTh(double A, double B, double C, double D, double pinfG, double pinfL, double T)
-// {
-//     // Purpose : compute saturated pressure Psat at a given temperature
-//     // See equation (70), fp is obtained with exp((70))
-//     // More : Newton-Raphson algo. is used
-//     double fp, dfp, p1(1.e5), p2(0.), err(1.);
-//     int count(0);
+double computePsatTh(double A, double B, double C, double D, double E, double pinfL, double T)
+{
+    // Purpose : compute saturated pressure Psat at a given temperature
+    // See eq. (41), fp is obtained with exp((41))
+    // More : Newton-Raphson algo. is used
+    double fp, dfp, p1(1.e5), p2(0.), err(1.), k(0.);
+    int count(0);
 
-//     while (err > 1.e-5 && count < 50) {
-//         // fp = log(p1+pinfG) - A - B/T - C*log(T) - D*log(p1+pinfL);
-//         // dfp = 1./(p1+pinfG) - D/(p1+pinfL);
-//         fp = p1 + pinfG - exp(A+B/T+C*log(T)) * pow((p1+pinfL),D);
-//         dfp = 1. - exp(A+B/T+C*log(T))*D*pow((p1+pinfL),D-1.);
-//         p2 = p1 - fp/dfp;
-//         err = fabs(p2-p1)/(0.5*(p1+p2));
-//         p1 = p2;
-//         count++;
-//         if (count >= 50) 
-//             cout << "Warning : newton-raphson of Psat(T) function not converged\n";
-//     }
-//     if (p2 < 1.e-6)
-//         return 0.;
-//     else
-//         return p2;
-// }
+    while (err > 1.e-5 && count < 50) {
+        k = exp(A+B/T+C*log(T));
+        fp = p1 - k*exp(E*p1/T)*pow((p1+pinfL),D);
+        dfp = 1. - k*exp(E*p1/T)*((E/T)*pow((p1+pinfL),D) + D*pow((p1+pinfL),(D-1.)));
+        p2 = p1 - fp/dfp;
+        err = fabs(p2-p1)/(0.5*(p1+p2));
+        p1 = p2;
+        count++;
+        if (count >= 50) 
+            cout << "Warning : newton-raphson of Psat(T) function not converged\n";
+    }
+    if (p2 < 1.e-6)
+        return 0.;
+    else
+        return p2;
+}
 
 double computeThEnthalpy(double cpk, double bk, double qk, double T, double P)
 {

@@ -1,0 +1,9 @@
+--- Liquid reference state ---
+
+-> At rest
+Pressure      (p0)    [Pa]
+1.128e5
+Density       (ro0)   [kg/m3]
+589.73
+Sound speed   (c0)    [m/s]
+620.4
