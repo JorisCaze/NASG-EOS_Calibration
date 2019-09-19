@@ -4,24 +4,58 @@ using namespace std;
 
 // **************************************************
 
+void displayHeader()
+{
+    cout << "  _   _           _____  _____    _____      _ _ _               _   _         " << endl;
+    cout << " | \\ | |   /\\    / ____|/ ____|  / ____|    | (_) |             | | (_)            " << endl;
+    cout << " |  \\| |  /  \\  | (___ | |  __  | |     __ _| |_| |__  _ __ __ _| |_ _  ___  _ __  " << endl;
+    cout << " | . ` | / /\\ \\  \\___ \\| | |_ | | |    / _` | | | '_ \\| '__/ _` | __| |/ _ \\| '_ \\ " << endl;
+    cout << " | |\\  |/ ____ \\ ____) | |__| | | |___| (_| | | | |_) | | | (_| | |_| | (_) | | | |" << endl;
+    cout << " |_| \\_/_/    \\_\\_____/ \\_____|  \\_____\\__,_|_|_|_.__/|_|  \\__,_|\\__|_|\\___/|_| |_|" << endl;
+}
+
+// **************************************************
+
 void readExpData(string file, vector<double> &Texp, vector<double> &PsatExp, vector<double> &vGexp, vector<double> &vLexp, vector<double> &hGexp, vector<double> &hLexp, vector<double> &LvExp)
 {
-    // Purpose : read the experimental data with 7 columns and an ignored header
+    // Purpose : read the experimental data with 6 columns and an ignored header
     ifstream strmIn(file.c_str());
     string line; 
-    double dat1, dat2, dat3, dat4, dat5, dat6, dat7;
+    double dat1, dat2, dat3, dat4, dat5, dat6;
     if (strmIn) {
         while (getline(strmIn,line)) {
-            strmIn >> dat1 >> dat2 >> dat3 >> dat4 >> dat5 >> dat6 >> dat7;
+            strmIn >> dat1 >> dat2 >> dat3 >> dat4 >> dat5 >> dat6;
             Texp.push_back(dat1);
             PsatExp.push_back(dat2);
             vGexp.push_back(dat3);
             vLexp.push_back(dat4);
-            hGexp.push_back(dat6);
-            hLexp.push_back(dat5);
-            LvExp.push_back(dat7);
+            hGexp.push_back(dat5);
+            hLexp.push_back(dat6);
+            LvExp.push_back(dat5-dat6);
         }
     }
+    else {
+        cout << "Error : reading experimental data file " << file << "\n"; exit(0);
+    }
+}
+
+// **************************************************
+
+void readFile(string const &file, vector<double> &tab_x, vector<double> &tab_y)
+{
+    // Purpose : read experimental data file with two columns and a header (ignored)
+    ifstream streamFile(file);
+    string line;
+    double data1(0.), data2(0.);
+
+    if (streamFile) {
+        while (getline(streamFile,line)) {
+            streamFile >> data1 >> data2; 
+            tab_x.push_back(data1);
+            tab_y.push_back(data2);
+            cout << data1 << " " << data2 << endl;
+        }
+    } 
     else {
         cout << "Error : reading experimental data file " << file << ".txt\n"; exit(0);
     }

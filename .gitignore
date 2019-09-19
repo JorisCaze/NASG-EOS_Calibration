@@ -8,3 +8,6 @@ exe
 
 # Output files
 res/*.txt
+
+# Tests
+tests/

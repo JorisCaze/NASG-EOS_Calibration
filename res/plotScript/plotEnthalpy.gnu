@@ -4,7 +4,7 @@ reset
 set style data lp
 
 set key bottom right
-set xlabel "Temperature T (k)"
+set xlabel "Temperature T (K)"
 set ylabel "Enthalpy (kJ/kg)"
 
 set title "hg"

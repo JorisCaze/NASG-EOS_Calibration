@@ -25,7 +25,7 @@ void readLiqVapInput(double &p0, double &ro0, double &c0)
 double computecpG(vector<double> const& hGexp, vector<double> const& ThGexp)
 {
     // Purpose : compute heat capacity at constant pressure of vapor phase with LSM
-    // More : the exp. data hG(TG) is used
+    // More : the exp. data hG(T) is used
     // See eq. (50)
     double mHg, mThg, num(0.), den(0.);
     mHg = meanValue(hGexp);
@@ -55,14 +55,13 @@ double computecvG(vector<double> const& vGexp, vector<double> const& Texp, vecto
 {
     // Purpose : commpute heat capacity at constant volum of vapor phase with LSM
     // More : vGexp, Texp and psatExp are concording experimental points
-    // Details : input values m'x' are the mean of the corresponding vector 'x'
     // See eq. (55)
     double num(0.), den(0.);
     for (unsigned int i = 0; i < Texp.size(); i++) {
         num += vGexp[i]*(Texp[i]/psatExp[i]);
         den += (Texp[i]/psatExp[i])*(Texp[i]/psatExp[i]);
     }
-    return (num/den + cpG);
+    return (cpG - num/den);
 }
 
 // **************************************************
@@ -94,50 +93,73 @@ double computeGammak(double cpk, double cvk)
 
 // **************************************************
 
-double computeHeatCapDiffL(vector<double> const& psatExp, vector<double> const& Texp, vector<double> const& vLexp, double mvL, double mT, double mp, double pinfL)
+double computeMeanTp(vector<double> const& psatExp, vector<double> const& Texp, double pinfL)
+{
+    // Purpose : compute the mean value seen in (64) and (65)
+    double mtp(0.);
+    for (unsigned int i = 0; i < Texp.size(); i++) {
+        mtp += Texp[i]/(psatExp[i]+pinfL);  
+    }
+    mtp /= Texp.size(); 
+    return mtp;
+}
+
+double computeMeanTp2(vector<double> const& psatExp, vector<double> const& Texp, double pinfL)
+{
+    // Purpose : compute a variation of the mean value seen in (64) and (65)
+    double mtp(0.);
+    for (unsigned int i = 0; i < Texp.size(); i++) {
+        mtp += Texp[i]/((psatExp[i]+pinfL)*(psatExp[i]+pinfL));  
+    }
+    mtp /= Texp.size(); 
+    return mtp;
+}
+
+double computeHeatCapDiffL(vector<double> const& psatExp, vector<double> const& Texp, vector<double> const& vLexp, double mvL, double mTp, double pinfL)
 {
     // Purpose : compute heat capacity cpL - cvL of liquid phase for pinfL iterative process with LSM 
-    // More : this fn is used to solve eq. (68) with Newton-Raphson 
+    // More : this fn is also used to solve eq. (68) with Newton-Raphson 
     // Details : input values m'x' are the mean of the corresponding vector 'x'
     // See eq. (64)  
-    double num(0.), den(0.);
+    double num(0.), den(0.), bf(0.);
     for (unsigned int i = 0; i < Texp.size(); i++) {
-        num += Texp[i]*(vLexp[i]-mvL)/(psatExp[i]+pinfL);
-        den += Texp[i]*(Texp[i]/(psatExp[i]+pinfL)-(mT/mp))/(psatExp[i]+pinfL);
+        bf = Texp[i]/(psatExp[i]+pinfL);
+        num += bf*(vLexp[i]-mvL);
+        den += bf*(bf-mTp);
     }
     return num/den;
 }
 
-double computeDHeatCapDiffL(vector<double> const& psatExp, vector<double> const& Texp, vector<double> const& vLexp, double mvL, double mT, double mp, double pinfL)
+double computeDHeatCapDiffL(vector<double> const& psatExp, vector<double> const& Texp, vector<double> const& vLexp, double mvL, double mTp, double mTp2, double pinfL)
 {
     // Purpose : compute pinfL derivative of fn computeHeatCapDiffL() for computePinfL Newton-Raphson process
-    double d1(0.), d2(0.), s1(0.), s2(0.), bf1(0.), bf2(0.);
+    double m1(0.), m2(0.), m3(0.), m4(0.), bf1(0.), bf2(0.);
     for (unsigned int i = 0; i < Texp.size(); i++) {
         bf1 = Texp[i]/(psatExp[i]+pinfL);
         bf2 = bf1/(psatExp[i]+pinfL);
-        s1 += bf1*(bf1-mT/mp);
-        s2 += bf1*(vLexp[i]-mvL);
-        d1 += -bf2*(vLexp[i]-mvL);
-        d2 += -bf2*(2.*bf1-mT/mp);
+        m1 += -bf2*(vLexp[i]*mvL);
+        m2 += bf1*(bf1 - (1./Texp.size())*mTp);
+        m3 += bf1*(vLexp[i]-mvL);
+        m4 += -bf2*(bf1-mTp)+bf1*(bf2+mTp2);
     }
-    return (d1*s1-s2*d2)/(s1*s1);
+    return (m1*m2-m3*m4)/(m2*m2);
 }
 
 // **************************************************
 
-double computebL(double mvl, double mT, double mp, double diffC)
+double computebL(double mvl, double mTp, double diffC)
 {
     // Purpose : compute bl parameter for liquid phase
     // More : input values mvl, mT and mp are (m)ean values and diffC = cpL - cvL
     // Details : input values m'x' are the mean of the corresponding vector 'x'
     // See eq. (65)
-    return (mvl-diffC*(mT/mp));
+    return (mvl-diffC*mTp);
 }
 
-double computeDbL(double mT, double mp, double dDiffC)
+double computeDbL(double mTp, double mTp2, double diffC, double dDiffC)
 {
     // Purpose : compute pinfL derivative of fn computebL() for computePinfL Newton-Raphson process
-    return dDiffC*(mT/mp);
+    return (-dDiffC*mTp + diffC*mTp2);
 }
 
 // **************************************************
@@ -186,8 +208,8 @@ double computePinfL(vector<double> const& psatExp, vector<double> const& Texp, v
     // Purpose : compute pinfL parameter of liquid phase using the Newton-Raphson procedure
     // More : liquid reference state and experimental data are used
     // See eq. (68)
-    double fp, dfp, dfp1, dfp2, pinf1(1.), pinf2(0.), err(0.);
-    double mp, mT, mvL, mhL;
+    double fp, dfp, dfp1, dfp2, pinf1(1.e5), pinf2(0.), err(1.);
+    double mp, mT, mvL, mhL, mTp, mTp2;
     double diffC, bL, cpL, dDiffC, dbL, dcpL;
     int count(0);
 
@@ -197,13 +219,16 @@ double computePinfL(vector<double> const& psatExp, vector<double> const& Texp, v
     mhL = meanValue(hLexp);
 
     while (err > 1.e-5 && count < 50) {
-        diffC = computeHeatCapDiffL(psatExp,Texp,vLexp,mvL,mT,mp,pinf1);
-        bL = computebL(mvL,mT,mp,diffC);
+        mTp = computeMeanTp(psatExp,Texp,pinf1);
+        mTp2 = computeMeanTp2(psatExp,Texp,pinf1);
+
+        diffC = computeHeatCapDiffL(psatExp,Texp,vLexp,mvL,mTp,pinf1);
+        bL = computebL(mvL,mTp,diffC);
         cpL = computeCpL(Texp,hLexp,psatExp,mhL,mp,mT,bL);
         
-        dDiffC = computeDHeatCapDiffL(psatExp,Texp,vLexp,mvL,mT,mp,pinf1);
-        dbL = computeDbL(mT,mp,dDiffC);
-        dcpL = computeDcpL(Texp,psatExp,mp,mT,dbL);
+        dDiffC = computeDHeatCapDiffL(psatExp,Texp,vLexp,mvL,mTp,mTp2,pinf1);
+        dbL = computeDbL(mTp,mTp2,diffC,dDiffC); 
+        dcpL = computeDcpL(Texp,psatExp,mp,mT,dbL); 
         
         dfp1 = -ro0*dbL;
         dfp2 = (dDiffC*cpL-diffC*dcpL)/(cpL*cpL);
@@ -219,10 +244,10 @@ double computePinfL(vector<double> const& psatExp, vector<double> const& Texp, v
             cout << "Warning : newton-raphson of Psat(T) function not converged\n"; exit(0);
         }
     }
-
-    if (pinf2 < 1.e-6)
-        return 0.;
-    else 
+    cout << count;
+    // if (pinf2 < 1.e-6)
+    //     return 0.;
+    // else 
         return pinf1;
 }
 
