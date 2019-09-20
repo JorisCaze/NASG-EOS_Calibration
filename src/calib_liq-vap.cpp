@@ -8,7 +8,7 @@ void readLiqVapInput(double &p0, double &ro0, double &c0)
     ifstream strmRefStates("input/refState.txt");
     string line("");
     if (strmRefStates) {
-        for (int i=1; i<6; i++) {getline(strmRefStates,line);}
+        for (int i=1; i<5; i++) {getline(strmRefStates,line);}
         p0 = stod(line);
         getline(strmRefStates,line); getline(strmRefStates,line);
         ro0 = stod(line);
