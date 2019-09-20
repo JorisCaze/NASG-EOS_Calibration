@@ -27,12 +27,10 @@ int main()
     mhL = meanValue(hLexp);
 
     // // --- Liquid phase ---
-    // pinfL = computePinfL(psatExp,Texp,vLexp,hLexp,p0,ro0,c0);
-    // cout << "pinfL : " << pinfL << endl;
-    pinfL = 1159.e5;
+    pinfL = computePinfL(psatExp,Texp,vLexp,hLexp,p0,ro0,c0);
     mTp = computeMeanTp(psatExp,Texp,pinfL);
     diffCl = computeHeatCapDiffL(psatExp,Texp,vLexp,mvL,mTp,pinfL);
-    bL = computebL(mvL,mT,mp,diffC);
+    bL = computebL(mvL,mTp,diffCl);
     cpL = computeCpL(Texp,hLexp,psatExp,mhL,mp,mT,bL);
     cvL = cpL - diffCl;
     gammaL = computeGammak(cpL,cvL);
@@ -46,7 +44,7 @@ int main()
     gammaG = computeGammak(cpG,cvG);
     pinfG = 0.;  // Ideal Gas
     bG = 0.;     // Ideal Gas
-    qPrimG = computeQprimG(psatExp,Texp,cpL,cpG,cvL,cvG,qL,qG,pinfL,bL); // OK
+    qPrimG = computeQprimG(psatExp,Texp,cpL,cpG,cvL,cvG,qL,qG,pinfL,bL);
 
     // --- Results --- 
     cout << "--- Liquid (L) ---\n";

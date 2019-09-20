@@ -208,7 +208,7 @@ double computePinfL(vector<double> const& psatExp, vector<double> const& Texp, v
     // Purpose : compute pinfL parameter of liquid phase using the Newton-Raphson procedure
     // More : liquid reference state and experimental data are used
     // See eq. (68)
-    double fp, dfp, dfp1, dfp2, pinf1(1.e5), pinf2(0.), err(1.);
+    double fp, dfp, dfp1, dfp2, pinf1(2.e5), pinf2(0.), err(1.);
     double mp, mT, mvL, mhL, mTp, mTp2;
     double diffC, bL, cpL, dDiffC, dbL, dcpL;
     int count(0);
@@ -244,7 +244,7 @@ double computePinfL(vector<double> const& psatExp, vector<double> const& Texp, v
             cout << "Warning : newton-raphson of Psat(T) function not converged\n"; exit(0);
         }
     }
-    cout << count;
+    cout << count << endl;
     // if (pinf2 < 1.e-6)
     //     return 0.;
     // else 
