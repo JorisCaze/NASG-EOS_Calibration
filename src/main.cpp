@@ -26,7 +26,7 @@ int main()
     mp = meanValue(psatExp);
     mhL = meanValue(hLexp);
 
-    // // --- Liquid phase ---
+    // --- Liquid phase ---
     pinfL = computePinfL(psatExp,Texp,vLexp,hLexp,p0,ro0,c0);
     mTp = computeMeanTp(psatExp,Texp,pinfL);
     diffCl = computeHeatCapDiffL(psatExp,Texp,vLexp,mvL,mTp,pinfL);

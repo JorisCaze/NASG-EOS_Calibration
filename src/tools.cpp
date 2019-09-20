@@ -21,17 +21,17 @@ void readExpData(string file, vector<double> &Texp, vector<double> &PsatExp, vec
     // Purpose : read the experimental data with 6 columns and an ignored header
     ifstream strmIn(file.c_str());
     string line; 
-    double dat1, dat2, dat3, dat4, dat5, dat6;
+    double dat1, dat2, dat3, dat4, dat5, dat6, dat7;
     if (strmIn) {
         while (getline(strmIn,line)) {
-            strmIn >> dat1 >> dat2 >> dat3 >> dat4 >> dat5 >> dat6;
+            strmIn >> dat1 >> dat2 >> dat3 >> dat4 >> dat5 >> dat6 >> dat7;
             Texp.push_back(dat1);
             PsatExp.push_back(dat2);
             vGexp.push_back(dat3);
             vLexp.push_back(dat4);
             hGexp.push_back(dat5);
             hLexp.push_back(dat6);
-            LvExp.push_back(dat5-dat6);
+            LvExp.push_back(dat7);
         }
     }
     else {
