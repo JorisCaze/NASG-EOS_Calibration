@@ -73,11 +73,7 @@ Remark: the decimal separator must be a dot.
 
 Once the NASG parameters are calibrated you will get their values in the shell environnement.
 
-Theoritical curves can be found in the folder `NASG-EOS_Calibration/res/`. If you want to plot theses curves and compare with the experimental ones you will have to go to the folder `NASG-EOS_Calibration/res/` and run the script `./runPlot.sh`. It might be possible that you don't have the rights to lauch these scripts, thus you will have to do :
-
-```sh
-$ find . -type f -name "*.sh" -exec chmod +x {} \;
-```
+Theoritical curves can be found in the folder `NASG-EOS_Calibration/res/`. If you want to plot theses curves and compare with the experimental ones you will have to go to the folder `NASG-EOS_Calibration/res/` and run the script `./runPlot.sh`. It might be possible that you don't have the rights to lauch these scripts, thus you will have to do a quick `chmod +x runPlot.sh`
 
 Scripts `runPlot.sh` display a preview of all curves in Gnuplot GUI and create in the same time plot files in `eps` format in the repository `EOS_Calibration/res/`.
 

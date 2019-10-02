@@ -9,6 +9,7 @@ dirs = $(shell find . -type d)
 SRC = $(foreach dir,$(dirs),$(wildcard $(dir)/*.cpp))
 OBJ = $(SRC:.cpp=.o)
 OUT = res/*.txt
+PLOT = res/*.eps
 
 all: $(OBJ)
 	$(CXX) $^ -o $(EXEC) $(CXXFLAGS)
@@ -26,4 +27,4 @@ mrproper:
 	rm -rf $(EXEC) 
 
 resClean:
-	rm -rf $(OUT)
+	rm -rf $(OUT) $(PLOT)
