@@ -40,14 +40,15 @@ set size 1, 1
 set terminal eps color enhanced font "14"
 set style line 1 lw 3 lc rgb "blue"
 
-set key bottom right
 set xlabel "Temperature T (K)"
 set ylabel "Specific volume (m3/kg)"
 
+set key top right
 set output "vG.eps"
 set title "v_g"
 plot "vG_th.txt" u 1:2 title "Theoric" w l ls 1, "../input/expData.txt" u 1:3 title "Experimental" w points pt 1 ps 1.2 lc rgb "red"
 
+set key top left
 set output "vL.eps"
 set title "v_l"
 plot "vL_th.txt" u 1:2 title "Theoric" w l ls 1, "../input/expData.txt" u 1:4 title "Experimental" w points pt 1 ps 1.2 lc rgb "red"
@@ -59,8 +60,7 @@ set size 1, 1
 set terminal eps color enhanced font "14"
 set style line 1 lw 3 lc rgb "blue"
 
-set key autotitle columnhead
-set key bottom left
+set key top left
 set xlabel "Temperature T (K)"
 set title "Saturated pressure Psat (bar)"
 

@@ -244,7 +244,7 @@ double computePinfL(vector<double> const& psatExp, vector<double> const& Texp, v
             cout << "Warning : newton-raphson of Psat(T) function not converged\n"; exit(0);
         }
     }
-    cout << "Number of iteration NR pinfL : " << count << endl;
+    // cout << "Number of iteration NR pinfL : " << count << endl;
     return pinf1;
 }
 
