@@ -8,6 +8,7 @@ exe
 
 # Output files
 res/*.txt
+res/*.eps
 
 # Tests
 tests/

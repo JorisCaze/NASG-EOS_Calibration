@@ -66,6 +66,8 @@ int main()
     cout << "q'G    (J.kg-1)      : " << qPrimG << endl;
     cout << "bG     (m3/kg)       : " << bG << endl;
     cout << "\n";
+
+    writeResults(cpL,qL,pinfL,cvL,gammaL,qPrimL,bL,cpG,qG,pinfG,cvG,gammaG,qPrimG,bG);
     
     // --- Write theoric curves --- 
     vector<double> hLth, hGth, LvTh, PsatTh, vlTh, vgTh;
