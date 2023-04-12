@@ -1,14 +1,14 @@
 # Noble-Abel Stiffened Gas equation of state calibration
 
-## About :pencil2:
+## About
 Noble-Abel Stiffened Gas (NASG) equations of state (EOS) calibration for compressible diphasic flow under mechanical equilibrium. 
 Calibration of SG EOS parameters is done for a liquid in the presence of its vapor. The EOS parameters are determined from experimental saturation curves.
 
-## Reference :book:
+## Reference
 [Le Métayer, O., & Saurel, R. ](https://doi.org/10.1063/1.4945981) (2016).
 The noble-abel stiffened-gas equation of state. Physics of Fluids, 28(4), 046102.
 
-## How to use :wrench:
+## How to use
 
 ### General remarks
 
@@ -86,3 +86,5 @@ Experimental data are from [J. R. Simões-Moreira](https://elibrary.ru/item.asp?
 Experimental data are extracted from [NIST website](https://webbook.nist.gov/chemistry/fluid).
 * Liquid/vapor oxygen in the temperature range T &isin; [60-100 K].
 Experimental data are available at the [NIST website](https://webbook.nist.gov/chemistry/fluid).
+
+In case of a new calibration, useful experimental data can be found in the [NIST website](https://webbook.nist.gov/chemistry/fluid).
